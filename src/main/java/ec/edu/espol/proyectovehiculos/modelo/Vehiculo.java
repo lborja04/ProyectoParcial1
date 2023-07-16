@@ -29,6 +29,7 @@ public class Vehiculo {
     protected String tipoCombustible;
     protected double precio;
     protected ArrayList<Oferta> ofertas;
+    protected String modelo;
     
     public Vehiculo(int id, String placa, String marca,String modelo, String tipoMotor,int año, String color, String tipoComb,double reco,double precio){
         this.id=id;
@@ -43,7 +44,12 @@ public class Vehiculo {
         this.color=color;
         this.tipoCombustible=tipoCombustible;
         this.precio=precio;
+        this.modelo=modelo;
         this.ofertas=new ArrayList<>();
+    }
+
+    public String getModelo() {
+        return modelo;
     }
 
     public int getId() {
@@ -149,8 +155,14 @@ public class Vehiculo {
     public void setOfertas(ArrayList<Oferta> ofertas) {
         this.ofertas = ofertas;
     }
-    
-    
+    public static void saveFileM(String nomfile){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
+            pw.println(getId+"|"+getPlaca()+"|"+getMarca()+"|"+getModelo()+"|"+getTipoMotor()+"|"+getAnio()+"|"+getColor()+"|"+getTipoCombustible()+"|"+getRecorrido()+"|"+getPrecio());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     }
     
 

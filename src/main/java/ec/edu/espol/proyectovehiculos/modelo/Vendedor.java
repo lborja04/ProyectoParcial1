@@ -124,6 +124,7 @@ public class Vendedor extends Usuario{
                 String mot=TipoVehiculo.MOTO.toString().toLowerCase();
                 String carro=TipoVehiculo.CARRO.toString().toLowerCase();
                 String camio=TipoVehiculo.CAMIONETA.toString().toLowerCase();
+                try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
                 if(tipo.equals(mot)){
                 System.out.println("INGRESE LA PLACA DEL VEHICULO: ");
                 String placa = sc.nextLine();
@@ -144,8 +145,8 @@ public class Vendedor extends Usuario{
                     String color = sc.nextLine();
                     System.out.println("INGRESE EL TIPO DE COMBUSTIBLE DEL VEHICULO: ");
                     String tipoComb = sc.nextLine();
-                    int id=Utili.nextID(nomFile);
-                    Vehiculo ve=new Vehiculo(id,placa,marca,modelo,tipomotor,año,color,tipoComb,recorrido,precio);
+                    int id=Utili.nextID(nomfile);
+                    pw.println(id+","+marca+","+modelo+","+tipomotor+","+año+","+recorrido+","+color+","+tipoComb+","+precio+","+tipo);
                 }else{
                         System.out.println("placa ya creada");
                 }
@@ -173,15 +174,15 @@ public class Vendedor extends Usuario{
                     String vidrio=sc.next();
                     System.out.println("Ingrese trasmision: ");
                     String trasmi=sc.next();
-                    int id=Utili.nextID(nomFile);
-                    Vehiculo vd= new Carro(id,placa,marca,modelo,mo,año,colo,tipoc,reco,precio,vidrio,trasmi);
-                    }else{
+                    int id=Utili.nextID(nomfile);
+                    pw.println(id+","+marca+","+modelo+","+mo+","+año+","+reco+","+colo+","+tipoc+","+precio+","+vidrio+","+trasmi+","+tipo);
+                }else{
                     System.out.println("La Placa ya existe");
             }
                 }else if(tipo.equals(camio)){
                     System.out.println("ingrese la placa del vehiculo: ");
                     String placa=sc.nextLine();
-                    if(Utili.buscarPlaca(Utili.leerArchivo(nomFile), placa)==null){
+                    if(Utili.buscarPlaca(Utili.leerArchivo(nomfile), placa)==null){
                         System.out.println("Ingrese la marca del vehiculo: ");
                         String marca=sc.nextLine();
                         System.out.println("Ingrese el modelo del vehiculo: ");
@@ -204,16 +205,18 @@ public class Vendedor extends Usuario{
                         String trasmi=sc.next();
                         System.out.println("Ingrese traccion: ");
                         String trac=sc.next();
-                        int id=Utili.nextID(nomFile);
-                        Vehiculo v3= new Camioneta(id,placa,marca,modelo,mo,año,colo,tipoc,reco,precio,vidrio,trasmi,trac);
-                       
+                        int id=Utili.nextID(nomfile);
+                         pw.println(id+","+marca+","+modelo+","+mo+","+año+","+reco+","+colo+","+tipoc+","+precio+","+vidrio+","+trasmi+","+trac+","+tipo);
             }else{
                  System.out.println("La Placa ya existe");
-                } 
+                }
+                }
+                    }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
                 
             }else
                 System.out.println("Clave erronea.");
         }
     }
-}
 }

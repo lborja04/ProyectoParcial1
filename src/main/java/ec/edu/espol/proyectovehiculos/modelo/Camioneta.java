@@ -4,6 +4,10 @@
  */
 package ec.edu.espol.proyectovehiculos.modelo;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+
 /**
  *
  * @author luisa
@@ -15,6 +19,16 @@ public class Camioneta extends Carro{
         super(id,placa,marca,modelo,tipoMotor,año,color,tipoComb,reco,precio,vidrios,transmision);
         this.tipo=TipoVehiculo.CAMIONETA;
         this.traccion=traccion;
+    }
+     public void saveFile3(String nomfile){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
+            pw.println(this.id+"|"+this.placa+"|"+this.marca+"|"+this.modelo+"|"+this.tipoMotor+"|"+this.anio+"|"+this.color+"|"+this.tipoCombustible+"|"+this.recorrido+"|"+this.precio+"|"+this.vidrios+"|"+this.transmision+"|"+this.traccion);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    
     }
     
 }
