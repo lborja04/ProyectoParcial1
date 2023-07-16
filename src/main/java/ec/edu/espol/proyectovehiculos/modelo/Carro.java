@@ -12,8 +12,8 @@ public class Carro extends Vehiculo{
     protected int vidrios;
     protected char transmision;
     
-    public Carro(int id, int id_vendedor, Vendedor vendedor, String placa, String marca, String tipoMotor, int anio, double recorrido, String color, String tipoCombustible, double precio, int vidrios, char transmision){
-        super(id, id_vendedor,vendedor,placa,marca,tipoMotor,anio,recorrido,color,tipoCombustible,precio);
+    public Carro(int id, String placa, String marca,String modelo, String tipoMotor,int año, String color, String tipoComb,double reco,double precio,String vidrio,String trasmision){
+        super(id,placa,marca,modelo,tipoMotor,año,color,tipoComb,reco,precio);
         this.tipo=TipoVehiculo.CARRO;
         this.vidrios=vidrios;
         this.transmision=transmision;

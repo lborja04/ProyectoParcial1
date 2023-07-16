@@ -110,7 +110,7 @@ public class Vendedor extends Usuario{
         if(v1==null)
             System.out.println("Este email no esta registrado");
         else{
-            v1=searchByCorreo(readFile(nomfile),correo);
+            v1=searchByCorreo(readFile("Vendedores.txt"),correo);
             System.out.println("Ingrese su contrasena: ");
             String clave="";
             try{
@@ -120,28 +120,100 @@ public class Vendedor extends Usuario{
             if(v1.getClave().equals(clave)){
                 System.out.println("Bienvenido/a, "+v1.getNombres().split(" ")[0]);
                 System.out.println("INGRESE EL TIPO DE VEHICULO: ");
-                String tipo = sc.nextLine();
-                System.out.println("INGRESE EL PRECIO DEL VEHICULO: ");
-                String precio = sc.nextLine();
+                String tipo = sc.nextLine().toLowerCase();
+                String mot=TipoVehiculo.MOTO.toString().toLowerCase();
+                String carro=TipoVehiculo.CARRO.toString().toLowerCase();
+                String camio=TipoVehiculo.CAMIONETA.toString().toLowerCase();
+                if(tipo.equals(mot)){
                 System.out.println("INGRESE LA PLACA DEL VEHICULO: ");
                 String placa = sc.nextLine();
-                System.out.println("INGRESE LA MARCA DEL VEHICULO: ");
-                String marca = sc.nextLine();
-                System.out.println("INGRESE EL MODELO DEL VEHICULO: ");
-                String modelo = sc.nextLine();
-                System.out.println("INGRESE EL TIPO MOTOR DEL VEHICULO: ");
-                String tipomotor = sc.nextLine();
-                System.out.println("INGRESE EL AÑO DEL VEHICULO: ");
-                String año = sc.nextLine();
-                System.out.println("INGRESE EL RECORRIDO DEL VEHICULO: ");
-                String recorrido = sc.nextLine();
-                System.out.println("INGRESE EL COLOR DEL VEHICULO: ");
-                String color = sc.nextLine();
-                System.out.println("INGRESE EL TIPO DE COMBUSTIBLE DEL VEHICULO: ");
-                String tipoComb = sc.nextLine();
+                if(Utili.buscarPlaca(readFile(nomfile), placa)==null){
+                    System.out.println("INGRESE EL PRECIO DEL VEHICULO: ");
+                    Double precio = sc.nextDouble();
+                    System.out.println("INGRESE LA MARCA DEL VEHICULO: ");
+                    String marca = sc.nextLine();
+                    System.out.println("INGRESE EL MODELO DEL VEHICULO: ");
+                    String modelo = sc.nextLine();
+                    System.out.println("INGRESE EL TIPO MOTOR DEL VEHICULO: ");
+                    String tipomotor = sc.nextLine();
+                    System.out.println("INGRESE EL AÑO DEL VEHICULO: ");
+                    int año = sc.nextInt();
+                    System.out.println("INGRESE EL RECORRIDO DEL VEHICULO: ");
+                    int recorrido = sc.nextInt();
+                    System.out.println("INGRESE EL COLOR DEL VEHICULO: ");
+                    String color = sc.nextLine();
+                    System.out.println("INGRESE EL TIPO DE COMBUSTIBLE DEL VEHICULO: ");
+                    String tipoComb = sc.nextLine();
+                    int id=Utili.nextID(nomFile);
+                    Vehiculo ve=new Vehiculo(id,placa,marca,modelo,tipomotor,año,color,tipoComb,recorrido,precio);
+                }else{
+                        System.out.println("placa ya creada");
+                }
+            }else if(tipo.equals(carro)){
+                System.out.println("INGRESE LA PLACA DEL VEHICULO: ");
+                String placa = sc.nextLine();
+                if(Utili.buscarPlaca(readFile(nomfile), placa)==null){
+                    System.out.println("Ingrese la marca del vehiculo: ");
+                    String marca=sc.nextLine();
+                    System.out.println("Ingrese el modelo del vehiculo: ");
+                    String modelo=sc.nextLine();
+                    System.out.println("Ingrese el tipo motor del vehiculo: ");
+                    String mo=sc.nextLine();
+                    System.out.println("Ingrese el año del vehiculo: ");
+                    int año=sc.nextInt();
+                    System.out.println("Ingrese el recorrido del vehiculo: ");
+                    double reco=sc.nextDouble();
+                    System.out.println("Ingrese el color del vehiculo: ");
+                    String colo=sc.next();
+                    System.out.println("Ingrese el tipo de combustible del vehiculo: ");
+                    String tipoc =sc.next();
+                    System.out.println("Ingrese el precio del vehiculo: ");
+                    Double precio =sc.nextDouble();
+                    System.out.println("Ingrese vidrios: ");
+                    String vidrio=sc.next();
+                    System.out.println("Ingrese trasmision: ");
+                    String trasmi=sc.next();
+                    int id=Utili.nextID(nomFile);
+                    Vehiculo vd= new Carro(id,placa,marca,modelo,mo,año,colo,tipoc,reco,precio,vidrio,trasmi);
+                    }else{
+                    System.out.println("La Placa ya existe");
             }
-            else
+                }else if(tipo.equals(camio)){
+                    System.out.println("ingrese la placa del vehiculo: ");
+                    String placa=sc.nextLine();
+                    if(Utili.buscarPlaca(Utili.leerArchivo(nomFile), placa)==null){
+                        System.out.println("Ingrese la marca del vehiculo: ");
+                        String marca=sc.nextLine();
+                        System.out.println("Ingrese el modelo del vehiculo: ");
+                        String modelo=sc.nextLine();
+                        System.out.println("Ingrese el tipo motor del vehiculo: ");
+                        String mo=sc.nextLine();
+                        System.out.println("Ingrese el año del vehiculo: ");
+                        int año=sc.nextInt();
+                        System.out.println("Ingrese el recorrido del vehiculo: ");
+                        double reco=sc.nextDouble();
+                        System.out.println("Ingrese el color del vehiculo: ");
+                        String colo=sc.next();
+                        System.out.println("Ingrese el tipo de combustible del vehiculo: ");
+                        String tipoc =sc.next();
+                        System.out.println("Ingrese el precio del vehiculo: ");
+                        Double precio =sc.nextDouble();
+                        System.out.println("Ingrese vidrios: ");
+                        String vidrio=sc.next();
+                        System.out.println("Ingrese trasmision: ");
+                        String trasmi=sc.next();
+                        System.out.println("Ingrese traccion: ");
+                        String trac=sc.next();
+                        int id=Utili.nextID(nomFile);
+                        Vehiculo v3= new Camioneta(id,placa,marca,modelo,mo,año,colo,tipoc,reco,precio,vidrio,trasmi,trac);
+                       
+            }else{
+                 System.out.println("La Placa ya existe");
+                } 
+                
+            }else
                 System.out.println("Clave erronea.");
         }
     }
+}
 }
