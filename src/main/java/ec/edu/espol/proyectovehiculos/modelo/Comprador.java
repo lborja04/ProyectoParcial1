@@ -6,86 +6,58 @@
 package ec.edu.espol.proyectovehiculos.modelo;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  *
- * @author luisa
+ * @author USER
  */
-public class Utilitaria {
+public class Comprador extends Usuario{
     
-    public static int generarID(String nomArchivo){
-        int id;
-        ArrayList<String> archivo=leerArchivo(nomArchivo);
-        id=archivo.size()+1;
-        return id;
+    private ArrayList<Oferta> ofertasPorVehiculo;
+
+    public Comprador(int id, String nombres, String apellidos, String correo, String organizacion, String clave) {
+        super(id, nombres, apellidos, correo, organizacion, clave);
+        this.ofertasPorVehiculo=new ArrayList<>();
+    }
+
+    public ArrayList<Oferta> getOfertasPorVehiculo() {
+        return ofertasPorVehiculo;
+    }
+
+    public void setOfertasPorVehiculo(ArrayList<Oferta> ofertasPorVehiculo) {
+        this.ofertasPorVehiculo = ofertasPorVehiculo;
     }
     
-    public static ArrayList<String> leerArchivo(String nomArchivo){
-        ArrayList<String> retorno=new ArrayList<>();
-        try(Scanner sc=new Scanner(new File(nomArchivo))){
-            while(sc.hasNextLine()){
-                retorno.add(sc.nextLine());
-            }
+    public static void registrarComprador(Scanner sc, String nomfile){
+        System.out.println("INGRESE LOS NOMBRES DEL COMPRADOR: ");
+        String nombres = sc.nextLine();
+        System.out.println("INGRESE LOS APELLIDOS DEL COMPRADOR: ");
+        String apellidos = sc.nextLine();
+        
+        String correo;
+        do{
+            System.out.print("INGRESE EL CORREO DEL COMPRADOR: ");
+            correo=sc.nextLine();
+            if(Utilitaria.validarCorreo(correo))
+                System.out.println("CORREO YA EN USO.");
+        }
+        while(Utilitaria.validarCorreo(correo));
+        
+        System.out.println("INGRESE LA ORGANIZACION DEL COMPRADOR: ");
+        String organizacion = sc.nextLine();
+        System.out.println("INGRESE LA CLAVE DEL COMPRADOR: ");
+        String clave=sc.nextLine();
+        
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Usuarios.txt"),true))){
+            pw.println(Utilitaria.generarID("Usuarios.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|COMPRADOR");
         }catch(Exception e){
-        }
-        return retorno;
-    }
-    
-    public static boolean validarCorreo(String correo){
-        ArrayList<String> usuarios=leerArchivo("Usuarios.txt");
-        for(String usuario: usuarios){
-            String[] datos=usuario.split("|");
-            String correoUsuario=datos[3];
-            if(correo.equals(correoUsuario))
-                return true;
-        }
-        return false;
-    }
-    
-     public static boolean validarPlaca(String placa){
-        ArrayList<String> vehiculos=leerArchivo("Vehiculos.txt");
-        for(String vehiculo: vehiculos){
-            String[] datos=vehiculo.split("|");
-            String placaVehiculo=datos[3];
-            if(placa.equals(placaVehiculo))
-                return true;
-        }
-        return false;
-    }
-    
-    public static String calcularHash(String contra) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] bytesHash = md.digest(contra.getBytes(StandardCharsets.UTF_8));
-            BigInteger numero = new BigInteger(1, bytesHash);
-            StringBuilder hashString = new StringBuilder(numero.toString(16));
-
-            while (hashString.length() < 64) {
-                hashString.insert(0, '0');
-            }
-
-            return hashString.toString();
-        } catch (NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());
-            return null;
         }
     }
-    
-    public static boolean esNumeroPosi(String str) {
-        try {
-            double num=Double.parseDouble(str);
-            if(num>=0)
-                return true;
-        } catch (NumberFormatException e) { 
-        }
-        return false;
-    }
-
-    
 }
+
+
