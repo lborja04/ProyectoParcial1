@@ -52,7 +52,7 @@ public class Comprador extends Usuario{
         System.out.println("INGRESE LA CLAVE DEL COMPRADOR: ");
         String clave=sc.nextLine();
         
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Usuarios.txt"),true))){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Compradores.txt"),true))){
             pw.println(Utilitaria.generarID("Compradores.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|COMPRADOR");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -66,7 +66,7 @@ public class Comprador extends Usuario{
             while(sc.hasNextLine())
                 compradores.add(sc.nextLine());
             for(String comprador: compradores){
-                String[] datos=comprador.split("|");
+                String[] datos=comprador.split("\\|");
                 int id_comprador=Integer.parseInt(datos[0]);
                 if(id==id_comprador){
                     retorno=new Comprador(id_comprador,datos[1],datos[2],datos[3],datos[4],datos[5]);

@@ -1,0 +1,1 @@
+1|CARRO|gsl-2004|nissan|tiida|toyota|2004|2004.0|gris|diesel|30000.0|4|automatica

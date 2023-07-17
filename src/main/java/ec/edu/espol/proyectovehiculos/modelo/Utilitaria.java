@@ -39,7 +39,7 @@ public class Utilitaria {
             while(sc.hasNextLine())
                 usuarios.add(sc.nextLine());
             for(String usuario: usuarios){
-                String[] datos=usuario.split("|");
+                String[] datos=usuario.split("\\|");
                 String correoUser=datos[3];
                 if(correoUser.equals(correo))
                     return true;
@@ -56,7 +56,7 @@ public class Utilitaria {
             while(sc.hasNextLine())
                 vehiculos.add(sc.nextLine());
             for(String vehiculo: vehiculos){
-                String[] datos=vehiculo.split("|");
+                String[] datos=vehiculo.split("\\|");
                 String placaVehiculo=datos[2];
                 if(placaVehiculo.equals(placa))
                     return true;
@@ -106,7 +106,7 @@ public class Utilitaria {
             Path ruta = Paths.get("Vehiculos.txt");
               
             for(String line:vehiculos){
-                String datos[]= line.split("|");
+                String datos[]= line.split("\\|");
                 if(datos[2].equals(vehiculo.getPlaca()))
                     vehiculos.set(vehiculos.indexOf(line), "");
             }

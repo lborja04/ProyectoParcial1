@@ -55,7 +55,7 @@ public class Vendedor extends Usuario{
         System.out.println("INGRESE LA CLAVE DEL VENDEDOR: ");
         String clave=sc.nextLine();
         
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Usuarios.txt"),true))){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Vendedores.txt"),true))){
             pw.println(Utilitaria.generarID("Vendedores.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|VENDEDOR");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -89,7 +89,7 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE EL PRECIO DEL VEHICULO: ");
                     precioPuesto = sc.nextLine();
                 }
-                while(Utilitaria.esNumeroPosi(precioPuesto));
+                while(!Utilitaria.esNumeroPosi(precioPuesto));
                 double precio=Double.parseDouble(precioPuesto);
                 
                 System.out.println("INGRESE LA MARCA DEL VEHICULO: ");
@@ -104,7 +104,7 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE EL AÑO DEL VEHICULO: ");
                     añoPuesto = sc.nextLine();
                 }
-                while(Utilitaria.esNumeroPosi(añoPuesto));
+                while(!Utilitaria.esNumeroPosi(añoPuesto));
                 int anio=Integer.parseInt(añoPuesto);
 
                 String recorridoPuesto;
@@ -112,7 +112,7 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE EL RECORRIDO DEL VEHICULO: ");
                     recorridoPuesto = sc.nextLine();
                 }
-                while(Utilitaria.esNumeroPosi(añoPuesto));
+                while(!Utilitaria.esNumeroPosi(añoPuesto));
                 int recorrido=Integer.parseInt(añoPuesto);
  
                 System.out.println("INGRESE EL COLOR DEL VEHICULO: ");
@@ -131,7 +131,7 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE NUMERO DE VIDRIOS DEL VEHICULO: ");
                     numVidrios = sc.nextLine();
                     }
-                    while(Utilitaria.esNumeroPosi(añoPuesto));
+                    while(!Utilitaria.esNumeroPosi(añoPuesto));
                     int vidrios=Integer.parseInt(numVidrios);
                         
                     System.out.println("INGRESE TRANSMISION DEL VEHICULO: ");
@@ -158,7 +158,7 @@ public class Vendedor extends Usuario{
         }
         catch(Exception e){}
         for(String vehiculo: vehiculos){
-            String[] datos=vehiculo.split("|");
+            String[] datos=vehiculo.split("\\|");
             TipoVehiculo tipo=TipoVehiculo.valueOf(datos[2]);
             switch(tipo){
                 case MOTO:
@@ -175,7 +175,6 @@ public class Vendedor extends Usuario{
     }
     
     public static Vendedor iniciarSesion(Scanner sc){
-        Vendedor vendedor=null;
         
         System.out.println("INGRESE SU CORREO: ");
         String correo=sc.nextLine();
@@ -188,19 +187,20 @@ public class Vendedor extends Usuario{
             while(sc2.hasNextLine())
                 usuarios.add(sc2.nextLine());
             for(String usuario: usuarios){
-                String[] datos=usuario.split("|");
+                String[] datos=usuario.split("\\|");
                 String correoUsuario=datos[3];
                 String claveUsuario=datos[5];
                 if(correoUsuario.equals(correo) && pass.equals(claveUsuario)){
-                    vendedor=new Vendedor(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
+                    Vendedor vendedor=new Vendedor(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
                     vendedor.cargarVehiculos();
+                    return vendedor;
                 }
             }
         }
         catch(Exception e){
         }
 
-        return vendedor;
+        return null;
     }
     
     public static void aceptarOferta(Scanner sc){
