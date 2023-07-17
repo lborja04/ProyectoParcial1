@@ -53,7 +53,7 @@ public class Comprador extends Usuario{
         String clave=sc.nextLine();
         
         try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Usuarios.txt"),true))){
-            pw.println(Utilitaria.generarID("Usuarios.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|COMPRADOR");
+            pw.println(Utilitaria.generarID("Compradores.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|COMPRADOR");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

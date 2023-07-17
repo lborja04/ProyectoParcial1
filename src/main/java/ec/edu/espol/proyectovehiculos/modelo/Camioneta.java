@@ -11,8 +11,8 @@ package ec.edu.espol.proyectovehiculos.modelo;
 public class Camioneta extends Carro{
     private String traccion;
     
-    public Camioneta(int id_vendedor,int id, String placa, String marca,String modelo, String tipoMotor,int año, String color, String tipoComb,double reco,double precio,int vidrios, String transmision, String traccion){
-        super(id_vendedor,id,placa,marca,modelo,tipoMotor,año,color,tipoComb,reco,precio,vidrios,transmision);
+    public Camioneta(int id_vendedor, String placa, String marca, String modelo, String tipoMotor,int anio, double reco, String color, String tipoComb,double precio,int vidrios, String transmision, String traccion){
+        super(id_vendedor,placa,marca,modelo,tipoMotor,anio,reco,color,tipoComb,precio,vidrios,transmision);
         this.tipo=TipoVehiculo.CAMIONETA;
         this.traccion=traccion;
     }

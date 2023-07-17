@@ -14,12 +14,12 @@ import java.util.ArrayList;
  * @author luisa
  */
 public class Vehiculo {
-    protected int id;
     protected int id_vendedor;
     protected Vendedor vendedor;
     protected TipoVehiculo tipo;
     protected String placa;
     protected String marca;
+    protected String modelo;
     protected String tipoMotor;
     protected int anio;
     protected double recorrido;
@@ -28,12 +28,12 @@ public class Vehiculo {
     protected double precio;
     protected ArrayList<Oferta> ofertas;
     
-    public Vehiculo(int id_vendedor,int id, String placa, String marca, String modelo, String tipoMotor,int anio, String color, String tipoComb,double reco,double precio){
-        this.id=id;
+    public Vehiculo(int id_vendedor, String placa, String marca, String modelo, String tipoMotor,int anio, double reco, String color, String tipoComb,double precio){
         this.id_vendedor=id_vendedor;
         this.tipo=TipoVehiculo.MOTO;
         this.placa=placa;
         this.marca=marca;
+        this.modelo=modelo;
         this.tipoMotor=tipoMotor;
         this.anio=anio;
         this.recorrido=reco;
@@ -45,14 +45,6 @@ public class Vehiculo {
 
     public Vehiculo(){}
     
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getId_vendedor() {
         return id_vendedor;
     }
@@ -151,11 +143,11 @@ public class Vehiculo {
     
     @Override
     public String toString(){
-        return id+"|"+id_vendedor+"|"+tipo+"|"+placa+"|"+marca+"|"+tipoMotor+"|"+anio+"|"+recorrido+"|"+color+"|"+tipoCombustible+"|"+precio;
+        return id_vendedor+"|"+tipo+"|"+placa+"|"+marca+"|"+modelo+"|"+tipoMotor+"|"+anio+"|"+recorrido+"|"+color+"|"+tipoCombustible+"|"+precio;
     }
     
-    public void registrarVehiculo(){
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Vehiculo.txt"),true))){
+    public void registrarVehiculo(String nomfile){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
             pw.println(this.toString());
         }catch(Exception e){
             System.out.println(e.getMessage());

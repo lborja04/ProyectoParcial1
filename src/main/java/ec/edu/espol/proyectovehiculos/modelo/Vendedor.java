@@ -56,33 +56,15 @@ public class Vendedor extends Usuario{
         String clave=sc.nextLine();
         
         try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Usuarios.txt"),true))){
-            pw.println(Utilitaria.generarID("Usuarios.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|VENDEDOR");
+            pw.println(Utilitaria.generarID("Vendedores.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|VENDEDOR");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
     
     public static void ingresarVehiculo(Scanner sc,String nomfile){
-        Vendedor vendedor=new Vendedor();
-        
-        System.out.println("INGRESE SU CORREO: ");
-        String correo=sc.nextLine();
-        System.out.println("INGRESE SU CLAVE");
-        String clave=sc.nextLine();
-        String pass=Utilitaria.calcularHash(clave);
-        
-        ArrayList<String> usuarios=Utilitaria.leerArchivo("Usuarios.txt");
-        boolean condicion=false;
-        for(String usuario: usuarios){
-            String[] datos=usuario.split("|");
-            String correoUsuario=datos[3];
-            String claveUsuario=datos[5];
-            if(correo.equals(correoUsuario) && pass.equals(claveUsuario)){
-                condicion=true;
-                vendedor=new Vendedor(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
-            }
-        }
-        if(condicion){
+        Vendedor vendedor=iniciarSesion(sc);
+        if(vendedor!=null){
                 System.out.println("BIENVENIDO/A, "+vendedor.nombres);
                 String tipo;
                 do{
@@ -97,7 +79,7 @@ public class Vendedor extends Usuario{
                 do{
                     System.out.print("INGRESE LA PLACA DEL VEHICULO: ");
                     placa=sc.nextLine();
-                    if(Utilitaria.validarCorreo(correo))
+                    if(Utilitaria.validarCorreo(vendedor.correo))
                         System.out.println("PLACA YA REGISTRADA.");
                 }
                 while(Utilitaria.validarPlaca(placa));
@@ -137,11 +119,11 @@ public class Vendedor extends Usuario{
                 String color = sc.nextLine();
                 System.out.println("INGRESE EL TIPO DE COMBUSTIBLE DEL VEHICULO: ");
                 String tipoComb = sc.nextLine();
-                int id=Utilitaria.generarID("Vehiculos.txt");
                 
                 Vehiculo nuevoVehiculo=new Vehiculo();
                 if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.MOTO)
-                    nuevoVehiculo=new Vehiculo(vendedor.id,id,placa,marca,modelo,tipomotor,anio,color,tipoComb,recorrido,precio);
+                    nuevoVehiculo=new Vehiculo(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio);
+                
                 
                 else{
                     String numVidrios;
@@ -154,18 +136,59 @@ public class Vendedor extends Usuario{
                         
                     System.out.println("INGRESE TRANSMISION DEL VEHICULO: ");
                     String trasmi=sc.next();
-                    
                     if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.CARRO)
-                        nuevoVehiculo= new Carro(vendedor.id,id,placa,marca,modelo,tipomotor,anio,color,tipoComb,recorrido,precio,vidrios,trasmi);
-
+                        nuevoVehiculo= new Carro(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio,vidrios,trasmi);
+                    
                     else if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.CAMIONETA){
                         System.out.println("INGRESE TRACCION DEL VEHICULO: ");
                         String traccion=sc.nextLine();
-                        nuevoVehiculo=new Camioneta(vendedor.id,id,placa,marca,modelo,tipomotor,anio,color,tipoComb,recorrido,precio,vidrios,trasmi,traccion);
+                        nuevoVehiculo=new Camioneta(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio,vidrios,trasmi,traccion);
                     }
                 }
                 vendedor.vehiculosEnVenta.add(nuevoVehiculo);
-                nuevoVehiculo.registrarVehiculo();
+                nuevoVehiculo.registrarVehiculo("Vehiculos.txt");
         }
-    }  
+    }
+    
+    public void cargarVehiculos(){
+        ArrayList<String> vehiculos=Utilitaria.leerArchivo("Vehiculos.txt");
+        for(String vehiculo: vehiculos){
+            String[] datos=vehiculo.split("|");
+            TipoVehiculo tipo=TipoVehiculo.valueOf(datos[2]);
+            switch(tipo){
+                case MOTO:
+                    this.vehiculosEnVenta.add(new Vehiculo(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11])));
+                    break;
+                case CARRO:
+                    this.vehiculosEnVenta.add(new Carro(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11]),Integer.parseInt(datos[12]),datos[13]));
+                    break;
+                case CAMIONETA:
+                    this.vehiculosEnVenta.add(new Camioneta(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11]),Integer.parseInt(datos[12]),datos[13],datos[14]));
+                    break;
+            }
+        }
+    }
+    
+    public static Vendedor iniciarSesion(Scanner sc){
+        Vendedor vendedor=null;
+        
+        System.out.println("INGRESE SU CORREO: ");
+        String correo=sc.nextLine();
+        System.out.println("INGRESE SU CLAVE");
+        String clave=sc.nextLine();
+        String pass=Utilitaria.calcularHash(clave);
+        
+        ArrayList<String> usuarios=Utilitaria.leerArchivo("Usuarios.txt");
+ 
+        for(String usuario: usuarios){
+            String[] datos=usuario.split("|");
+            String correoUsuario=datos[3];
+            String claveUsuario=datos[5];
+            if(correo.equals(correoUsuario) && pass.equals(claveUsuario)){
+                vendedor=new Vendedor(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
+                vendedor.cargarVehiculos();
+            }
+        }
+        return vendedor;
+    }
 }

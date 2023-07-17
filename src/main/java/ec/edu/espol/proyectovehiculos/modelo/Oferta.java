@@ -11,16 +11,15 @@ package ec.edu.espol.proyectovehiculos.modelo;
 public class Oferta {
     private int id_comprador;
     private Comprador comprador;
-    private int id_vehiculo;
+    private int placa_vehiculo;
     private Vehiculo vehiculo;
     private double precioOferta;
     
-    public Oferta(int id_comprador, Comprador comprador, int id_vehiculo, Vehiculo vehiculo, double precioOferta){
+    public Oferta(int id_comprador, int id_vehiculo, double precioOferta){
         this.id_comprador=id_comprador;
-        this.comprador=comprador;
-        this.id_vehiculo=id_vehiculo;
-        this.vehiculo=vehiculo;
+        this.placa_vehiculo=id_vehiculo;
         this.precioOferta=precioOferta;
     }
+    
     
 }
