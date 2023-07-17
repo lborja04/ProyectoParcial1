@@ -6,8 +6,12 @@
 package ec.edu.espol.proyectovehiculos.modelo;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -20,44 +24,50 @@ import java.util.Scanner;
 public class Utilitaria {
     
     public static int generarID(String nomArchivo){
-        int id;
-        ArrayList<String> archivo=leerArchivo(nomArchivo);
-        id=archivo.size()+1;
-        return id;
-    }
-    
-    public static ArrayList<String> leerArchivo(String nomArchivo){
-        ArrayList<String> retorno=new ArrayList<>();
+        ArrayList<String> usuarios=new ArrayList<>();
         try(Scanner sc=new Scanner(new File(nomArchivo))){
-            while(sc.hasNextLine()){
-                retorno.add(sc.nextLine());
+            while(sc.hasNextLine())
+                usuarios.add(sc.nextLine());
+        }
+        catch(Exception e){}
+        return usuarios.size()+1;
+    }
+    
+    public static boolean validarCorreo(String nomfile, String correo){
+        ArrayList<String> usuarios=new ArrayList<>();
+        try(Scanner sc=new Scanner(new File(nomfile))){
+            while(sc.hasNextLine())
+                usuarios.add(sc.nextLine());
+            for(String usuario: usuarios){
+                String[] datos=usuario.split("|");
+                String correoUser=datos[3];
+                if(correoUser.equals(correo))
+                    return true;
             }
-        }catch(Exception e){
         }
-        return retorno;
+        catch(Exception e){
+        }
+        return false; 
     }
     
-    public static boolean validarCorreo(String correo){
-        ArrayList<String> usuarios=leerArchivo("Usuarios.txt");
-        for(String usuario: usuarios){
-            String[] datos=usuario.split("|");
-            String correoUsuario=datos[3];
-            if(correo.equals(correoUsuario))
-                return true;
+    public static boolean validarPlaca(String placa){
+        ArrayList<String> vehiculos=new ArrayList<>();
+        try(Scanner sc=new Scanner(new File("Vehiculos.txt"))){
+            while(sc.hasNextLine())
+                vehiculos.add(sc.nextLine());
+            for(String vehiculo: vehiculos){
+                String[] datos=vehiculo.split("|");
+                String placaVehiculo=datos[2];
+                if(placaVehiculo.equals(placa))
+                    return true;
+            }
         }
-        return false;
+        catch(Exception e){
+        }
+        return false; 
     }
     
-     public static boolean validarPlaca(String placa){
-        ArrayList<String> vehiculos=leerArchivo("Vehiculos.txt");
-        for(String vehiculo: vehiculos){
-            String[] datos=vehiculo.split("|");
-            String placaVehiculo=datos[3];
-            if(placa.equals(placaVehiculo))
-                return true;
-        }
-        return false;
-    }
+    
     
     public static String calcularHash(String contra) {
         try {
@@ -87,6 +97,23 @@ public class Utilitaria {
         return false;
     }
 
-    
+    public static void eliminarVehiculo(Vehiculo vehiculo, String nomfile){
+        ArrayList<String> vehiculos=new ArrayList<>();
+        try (Scanner sc=new Scanner(new File("Vehiculos.txt"))){
+            while(sc.hasNextLine())
+                vehiculos.add(sc.nextLine());
+            
+            Path ruta = Paths.get("Vehiculos.txt");
+              
+            for(String line:vehiculos){
+                String datos[]= line.split("|");
+                if(datos[2].equals(vehiculo.getPlaca()))
+                    vehiculos.set(vehiculos.indexOf(line), "");
+            }
+            Files.write(ruta, vehiculos);
+            }
+            catch (IOException e) {
+            }
+    }
 }
 

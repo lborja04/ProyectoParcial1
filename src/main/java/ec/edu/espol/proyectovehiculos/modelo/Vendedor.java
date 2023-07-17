@@ -45,10 +45,10 @@ public class Vendedor extends Usuario{
         do{
             System.out.print("INGRESE EL CORREO DEL VENDEDOR: ");
             correo=sc.nextLine();
-            if(Utilitaria.validarCorreo(correo))
+            if(Utilitaria.validarCorreo("Vendedores.txt",correo))
                 System.out.println("CORREO YA EN USO.");
         }
-        while(Utilitaria.validarCorreo(correo));
+        while(Utilitaria.validarCorreo("Vendedores.txt",correo));
         
         System.out.println("INGRESE LA ORGANIZACION DEL VENDEDOR: ");
         String organizacion = sc.nextLine();
@@ -62,7 +62,7 @@ public class Vendedor extends Usuario{
         }
     }
     
-    public static void ingresarVehiculo(Scanner sc,String nomfile){
+    public static void ingresarVehiculo(Scanner sc){
         Vendedor vendedor=iniciarSesion(sc);
         if(vendedor!=null){
                 System.out.println("BIENVENIDO/A, "+vendedor.nombres);
@@ -79,7 +79,7 @@ public class Vendedor extends Usuario{
                 do{
                     System.out.print("INGRESE LA PLACA DEL VEHICULO: ");
                     placa=sc.nextLine();
-                    if(Utilitaria.validarCorreo(vendedor.correo))
+                    if(Utilitaria.validarCorreo(vendedor.correo,"Vendedores.txt"))
                         System.out.println("PLACA YA REGISTRADA.");
                 }
                 while(Utilitaria.validarPlaca(placa));
@@ -151,7 +151,12 @@ public class Vendedor extends Usuario{
     }
     
     public void cargarVehiculos(){
-        ArrayList<String> vehiculos=Utilitaria.leerArchivo("Vehiculos.txt");
+        ArrayList<String> vehiculos=new ArrayList<>();
+        try(Scanner sc=new Scanner(new File("Vehiculos.txt"))){
+            while(sc.hasNextLine())
+                vehiculos.add(sc.nextLine());
+        }
+        catch(Exception e){}
         for(String vehiculo: vehiculos){
             String[] datos=vehiculo.split("|");
             TipoVehiculo tipo=TipoVehiculo.valueOf(datos[2]);
@@ -178,17 +183,71 @@ public class Vendedor extends Usuario{
         String clave=sc.nextLine();
         String pass=Utilitaria.calcularHash(clave);
         
-        ArrayList<String> usuarios=Utilitaria.leerArchivo("Usuarios.txt");
- 
-        for(String usuario: usuarios){
-            String[] datos=usuario.split("|");
-            String correoUsuario=datos[3];
-            String claveUsuario=datos[5];
-            if(correo.equals(correoUsuario) && pass.equals(claveUsuario)){
-                vendedor=new Vendedor(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
-                vendedor.cargarVehiculos();
+        ArrayList<String> usuarios=new ArrayList<>();
+        try(Scanner sc2=new Scanner(new File("Vendedores.txt"))){
+            while(sc2.hasNextLine())
+                usuarios.add(sc2.nextLine());
+            for(String usuario: usuarios){
+                String[] datos=usuario.split("|");
+                String correoUsuario=datos[3];
+                String claveUsuario=datos[5];
+                if(correoUsuario.equals(correo) && pass.equals(claveUsuario)){
+                    vendedor=new Vendedor(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
+                    vendedor.cargarVehiculos();
+                }
             }
         }
+        catch(Exception e){
+        }
+
         return vendedor;
+    }
+    
+    public static void aceptarOferta(Scanner sc){
+        Vendedor vendedor=Vendedor.iniciarSesion(sc);
+        if(vendedor==null)
+            System.out.println("USUARIO NO EXISTE");
+        else{
+            System.out.println("INGRESE LA PLACA DEL VEHÍCULO DEL CUAL QUIERE REVISAR SUS OFERTAS");
+            String placa=sc.nextLine();
+            if(!Utilitaria.validarPlaca(placa))
+                System.out.println("PLACA NO EXISTE");
+            else{
+                Vehiculo v1=Vehiculo.obtenerPorPlaca(placa);
+                System.out.println(v1.getMarca()+v1.getModelo()+v1.getPrecio());
+                ArrayList<Oferta> ofertas=v1.obtenerOfertas();
+                System.out.println("SE HAN REALIZADO "+ofertas.size()+" OFERTAS.");
+                for(int i=0;i<ofertas.size();i++){
+                    System.out.println("OFERTA "+i);
+                    System.out.println("Correo: "+ofertas.get(i).getComprador().getCorreo());
+                    System.out.println("Precio ofertado "+ofertas.get(i).getPrecioOferta());
+                    if(i==0){
+                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2)ACEPTAR OFERTA");
+                        int opcion=sc.nextInt();
+                        if(opcion>=1&&opcion<=2){
+                            if(opcion==2){
+                                //Utilitaria.enviarConGMail(ofertas.get(i).getComprador().getCorreo(),this.correo,"SU OFERTA HA SIDO ACEPTADA");
+                                Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo(),"Vehiculos.txt");
+                                break;
+                            }
+                        }else
+                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
+                    }else{
+                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3)ACEPTAR OFERTA");
+                        int opcion=sc.nextInt();
+                        if(opcion>=1&&opcion<=3){
+                            if(opcion==2)
+                                i-=2;
+                            else if(opcion==3){
+                                //Utilitaria.enviarConGMail(ofertas.get(i).comprador.getCorreo(),correo,"SU OFERTA HA SIDO ACEPTADA");
+                                Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo(),"Vehiculos.txt");
+                                break;
+                            }
+                        }else
+                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
+                    }
+                }
+            }
+        }
     }
 }
