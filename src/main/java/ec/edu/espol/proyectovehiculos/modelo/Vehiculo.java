@@ -3,14 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ec.edu.espol.proyectovehiculos.modelo;
-import static ec.edu.espol.proyectovehiculos.modelo.Vendedor.getSHA;
-import static ec.edu.espol.proyectovehiculos.modelo.Vendedor.toHexString;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 /**
  *
  * @author luisa
@@ -29,29 +27,24 @@ public class Vehiculo {
     protected String tipoCombustible;
     protected double precio;
     protected ArrayList<Oferta> ofertas;
-    protected String modelo;
     
-    public Vehiculo(int id, String placa, String marca,String modelo, String tipoMotor,int año, String color, String tipoComb,double reco,double precio){
+    public Vehiculo(int id_vendedor,int id, String placa, String marca, String modelo, String tipoMotor,int anio, String color, String tipoComb,double reco,double precio){
         this.id=id;
         this.id_vendedor=id_vendedor;
         this.tipo=TipoVehiculo.MOTO;
-        this.vendedor=vendedor;
         this.placa=placa;
         this.marca=marca;
         this.tipoMotor=tipoMotor;
         this.anio=anio;
-        this.recorrido=recorrido;
+        this.recorrido=reco;
         this.color=color;
-        this.tipoCombustible=tipoCombustible;
+        this.tipoCombustible=tipoComb;
         this.precio=precio;
-        this.modelo=modelo;
         this.ofertas=new ArrayList<>();
     }
 
-    public String getModelo() {
-        return modelo;
-    }
-
+    public Vehiculo(){}
+    
     public int getId() {
         return id;
     }
@@ -155,15 +148,17 @@ public class Vehiculo {
     public void setOfertas(ArrayList<Oferta> ofertas) {
         this.ofertas = ofertas;
     }
-    public static void saveFileM(String nomfile){
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
-            pw.println(getId+"|"+getPlaca()+"|"+getMarca()+"|"+getModelo()+"|"+getTipoMotor()+"|"+getAnio()+"|"+getColor()+"|"+getTipoCombustible()+"|"+getRecorrido()+"|"+getPrecio());
+    
+    @Override
+    public String toString(){
+        return id+"|"+id_vendedor+"|"+tipo+"|"+placa+"|"+marca+"|"+tipoMotor+"|"+anio+"|"+recorrido+"|"+color+"|"+tipoCombustible+"|"+precio;
+    }
+    
+    public void registrarVehiculo(){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Vehiculo.txt"),true))){
+            pw.println(this.toString());
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
-
-    }
-    
-
-
+}

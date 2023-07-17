@@ -4,10 +4,6 @@
  */
 package ec.edu.espol.proyectovehiculos.modelo;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-
 /**
  *
  * @author luisa
@@ -15,20 +11,14 @@ import java.io.PrintWriter;
 public class Camioneta extends Carro{
     private String traccion;
     
-    public Camioneta(int id, String placa, String marca,String modelo, String tipoMotor,int año, String color, String tipoComb,double reco,double precio,String vidrios, String transmision, String traccion){
-        super(id,placa,marca,modelo,tipoMotor,año,color,tipoComb,reco,precio,vidrios,transmision);
+    public Camioneta(int id_vendedor,int id, String placa, String marca,String modelo, String tipoMotor,int año, String color, String tipoComb,double reco,double precio,int vidrios, String transmision, String traccion){
+        super(id_vendedor,id,placa,marca,modelo,tipoMotor,año,color,tipoComb,reco,precio,vidrios,transmision);
         this.tipo=TipoVehiculo.CAMIONETA;
         this.traccion=traccion;
     }
-     public void saveFile3(String nomfile){
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
-            pw.println(this.id+"|"+this.placa+"|"+this.marca+"|"+this.modelo+"|"+this.tipoMotor+"|"+this.anio+"|"+this.color+"|"+this.tipoCombustible+"|"+this.recorrido+"|"+this.precio+"|"+this.vidrios+"|"+this.transmision+"|"+this.traccion);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
+    
+    @Override
+    public String toString(){
+        return super.toString()+"|"+traccion;
     }
-    
-    
-    }
-    
 }

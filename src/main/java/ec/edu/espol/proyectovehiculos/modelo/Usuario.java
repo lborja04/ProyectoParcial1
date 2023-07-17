@@ -2,19 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ec.edu.espol.proyecto.classes;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.util.Scanner;
+package ec.edu.espol.proyectovehiculos.modelo;
 
 /**
  *
  * @author USER
  */
 public abstract class Usuario {
-    protected int id=0;
+    protected int id;
     protected String nombres;
     protected String apellidos;
     protected String correo;
@@ -29,6 +24,7 @@ public abstract class Usuario {
         this.organizacion = organizacion;
         this.clave = clave;
     }
+    
     public Usuario(){
     }
 
@@ -78,13 +74,6 @@ public abstract class Usuario {
 
     public void setClave(String clave) {
         this.clave = clave;
-    }
-    public void saveFile(String nomfile){
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
-            pw.println(this.id+"|"+this.nombres+"|"+this.apellidos+"|"+this.correo+"|"+this.organizacion+"|"+this.clave);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
     }
     
 }
