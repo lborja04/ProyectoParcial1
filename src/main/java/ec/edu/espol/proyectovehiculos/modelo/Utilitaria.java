@@ -97,25 +97,7 @@ public class Utilitaria {
         return false;
     }
 
-    public static void eliminarOferta(Oferta oferta, String nomfile){
-        ArrayList<String> ofertas=new ArrayList<>();
-        try (Scanner sc=new Scanner(new File("Ofertas.txt"))){
-            while(sc.hasNextLine())
-                ofertas.add(sc.nextLine());
-            
-            Path ruta = Paths.get("Vehiculos.txt");
-              
-            for(String line:ofertas){
-                String datos[]= line.split("\\|");
-                if(datos[0].equals(oferta.getId_comprador()))
-                    ofertas.set(ofertas.indexOf(line), "*");
-            }
-            Files.write(ruta, ofertas);
-            }
-            catch (IOException e) {
-            }
-    }
-    
+
     public static void eliminarVehiculo(Vehiculo vehiculo, String nomfile){
         ArrayList<String> vehiculos=new ArrayList<>();
         try (Scanner sc=new Scanner(new File("Vehiculos.txt"))){
@@ -163,4 +145,3 @@ public class Utilitaria {
         return null;
     }
 }
-

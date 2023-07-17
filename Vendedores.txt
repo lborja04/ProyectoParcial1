@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 1|eduardo|cruz ramirez|educruz@espol.edu.ec|espol|20f3765880a5c269b747e1e906054a4b4a3a991259f1e16b5dde4742cec2319a|VENDEDOR
+=======
+1|LUI|BORJ|laborja@espol.edu.ec|12345|5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5|VENDEDOR
+>>>>>>> e7a446903013bf00a3a84a05871ff367eb2f499d

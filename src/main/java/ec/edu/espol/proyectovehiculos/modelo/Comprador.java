@@ -108,46 +108,6 @@ public class Comprador extends Usuario{
         return ofertas;
     }
     
-    public static void consultarOfertas(Scanner sc){
-        Comprador comprador=Comprador.iniciarSesion(sc);
-        if(comprador==null)
-            System.out.println("USUARIO NO EXISTE");
-        else{
-                ArrayList<Oferta> ofertas=comprador.obtenerOfertas();
-                System.out.println("SE HAN REALIZADO "+ofertas.size()+" OFERTAS.");
-                for(int i=0;i<ofertas.size();i++){
-                    System.out.println("OFERTA "+(i+1));
-                    System.out.println("Correo: "+ofertas.get(i).getComprador().getCorreo());
-                    System.out.println("Precio ofertado "+ofertas.get(i).getPrecioOferta());
-                    if(i==0){
-                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2)ACEPTAR OFERTA");
-                        int opcion=sc.nextInt();
-                        if(opcion>=1&&opcion<=2){
-                            if(opcion==2){
-                                //Utilitaria.enviarConGMail(ofertas.get(i).getComprador().getCorreo(),this.correo,"SU OFERTA HA SIDO ACEPTADA");
-                                Utilitaria.eliminarOferta(ofertas.get(i),"Ofertas.txt");
-                                break;
-                            }
-                        }else
-                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
-                    }else{
-                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3)ELIMINAR OFERTA");
-                        int opcion=sc.nextInt();
-                        if(opcion>=1&&opcion<=3){
-                            if(opcion==2)
-                                i-=2;
-                            else if(opcion==3){
-                                //Utilitaria.enviarConGMail(ofertas.get(i).comprador.getCorreo(),correo,"SU OFERTA HA SIDO ACEPTADA");
-                                Utilitaria.eliminarOferta(ofertas.get(i),"Ofertas.txt");
-                                break;
-                            }
-                        }else
-                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
-                    }
-                }
-            }
-        }
-    
     
     public static Comprador obtenerPorId(int id){
         ArrayList<String> compradores=new ArrayList<>();
