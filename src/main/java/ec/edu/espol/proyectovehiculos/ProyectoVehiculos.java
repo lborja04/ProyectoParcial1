@@ -68,12 +68,13 @@ public class ProyectoVehiculos {
                 else if(opcion1.equals("2")){
                     System.out.println("1. REGISTRAR UN NUEVO COMPRADOR");
                     System.out.println("2. OFERTAR POR UN VEHICULO");
+                    System.out.println("3. ELIMINAR OFERTA");
 
                     do{
                         System.out.print("INGRESE OPCION: ");
                         opcion2=sc.nextLine();
                     }
-                    while(!opcion2.equals("1") && !opcion2.equals("2"));
+                    while(!opcion2.equals("1") && !opcion2.equals("2") && !opcion2.equals("3"));
                     
                     switch(opcion2){
                         case "1":
@@ -81,6 +82,9 @@ public class ProyectoVehiculos {
                             break;
                         case "2":
                             //Comprador.ofertarVehiculo();
+                            break;
+                        case "3":
+                            Comprador.consultarOfertas(sc);
                             break;
                     }
                 }

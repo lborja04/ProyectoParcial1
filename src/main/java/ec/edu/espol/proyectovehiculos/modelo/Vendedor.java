@@ -55,7 +55,7 @@ public class Vendedor extends Usuario{
         System.out.println("INGRESE LA CLAVE DEL VENDEDOR: ");
         String clave=sc.nextLine();
         
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Usuarios.txt"),true))){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Vendedores.txt"),true))){
             pw.println(Utilitaria.generarID("Vendedores.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|VENDEDOR");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -89,7 +89,7 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE EL PRECIO DEL VEHICULO: ");
                     precioPuesto = sc.nextLine();
                 }
-                while(Utilitaria.esNumeroPosi(precioPuesto));
+                while(!Utilitaria.esNumeroPosi(precioPuesto));
                 double precio=Double.parseDouble(precioPuesto);
                 
                 System.out.println("INGRESE LA MARCA DEL VEHICULO: ");
@@ -104,7 +104,7 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE EL AÑO DEL VEHICULO: ");
                     añoPuesto = sc.nextLine();
                 }
-                while(Utilitaria.esNumeroPosi(añoPuesto));
+                while(!Utilitaria.esNumeroPosi(añoPuesto));
                 int anio=Integer.parseInt(añoPuesto);
 
                 String recorridoPuesto;
@@ -112,8 +112,8 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE EL RECORRIDO DEL VEHICULO: ");
                     recorridoPuesto = sc.nextLine();
                 }
-                while(Utilitaria.esNumeroPosi(añoPuesto));
-                int recorrido=Integer.parseInt(añoPuesto);
+                while(!Utilitaria.esNumeroPosi(recorridoPuesto));
+                double recorrido=Double.parseDouble(recorridoPuesto);
  
                 System.out.println("INGRESE EL COLOR DEL VEHICULO: ");
                 String color = sc.nextLine();
@@ -131,7 +131,7 @@ public class Vendedor extends Usuario{
                     System.out.println("INGRESE NUMERO DE VIDRIOS DEL VEHICULO: ");
                     numVidrios = sc.nextLine();
                     }
-                    while(Utilitaria.esNumeroPosi(añoPuesto));
+                    while(!Utilitaria.esNumeroPosi(añoPuesto));
                     int vidrios=Integer.parseInt(numVidrios);
                         
                     System.out.println("INGRESE TRANSMISION DEL VEHICULO: ");
@@ -158,7 +158,7 @@ public class Vendedor extends Usuario{
         }
         catch(Exception e){}
         for(String vehiculo: vehiculos){
-            String[] datos=vehiculo.split("|");
+            String[] datos=vehiculo.split("\\|");
             TipoVehiculo tipo=TipoVehiculo.valueOf(datos[2]);
             switch(tipo){
                 case MOTO:
@@ -188,7 +188,7 @@ public class Vendedor extends Usuario{
             while(sc2.hasNextLine())
                 usuarios.add(sc2.nextLine());
             for(String usuario: usuarios){
-                String[] datos=usuario.split("|");
+                String[] datos=usuario.split("\\|");
                 String correoUsuario=datos[3];
                 String claveUsuario=datos[5];
                 if(correoUsuario.equals(correo) && pass.equals(claveUsuario)){
@@ -213,17 +213,18 @@ public class Vendedor extends Usuario{
             if(!Utilitaria.validarPlaca(placa))
                 System.out.println("PLACA NO EXISTE");
             else{
-                Vehiculo v1=Vehiculo.obtenerPorPlaca(placa);
-                System.out.println(v1.getMarca()+v1.getModelo()+v1.getPrecio());
+                Vehiculo v1=Utilitaria.obtenerPorPlaca(placa);
+                System.out.println(v1.getMarca()+" "+v1.getModelo()+" "+v1.getPrecio());
                 ArrayList<Oferta> ofertas=v1.obtenerOfertas();
                 System.out.println("SE HAN REALIZADO "+ofertas.size()+" OFERTAS.");
                 for(int i=0;i<ofertas.size();i++){
-                    System.out.println("OFERTA "+i);
+                    System.out.println("OFERTA "+(i+1));
                     System.out.println("Correo: "+ofertas.get(i).getComprador().getCorreo());
                     System.out.println("Precio ofertado "+ofertas.get(i).getPrecioOferta());
                     if(i==0){
                         System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2)ACEPTAR OFERTA");
                         int opcion=sc.nextInt();
+                        sc.nextLine();
                         if(opcion>=1&&opcion<=2){
                             if(opcion==2){
                                 //Utilitaria.enviarConGMail(ofertas.get(i).getComprador().getCorreo(),this.correo,"SU OFERTA HA SIDO ACEPTADA");
@@ -235,6 +236,7 @@ public class Vendedor extends Usuario{
                     }else{
                         System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3)ACEPTAR OFERTA");
                         int opcion=sc.nextInt();
+                        sc.nextLine();
                         if(opcion>=1&&opcion<=3){
                             if(opcion==2)
                                 i-=2;

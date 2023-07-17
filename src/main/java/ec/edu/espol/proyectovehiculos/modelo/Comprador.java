@@ -52,12 +52,102 @@ public class Comprador extends Usuario{
         System.out.println("INGRESE LA CLAVE DEL COMPRADOR: ");
         String clave=sc.nextLine();
         
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Usuarios.txt"),true))){
+        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Compradores.txt"),true))){
             pw.println(Utilitaria.generarID("Compradores.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|COMPRADOR");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
+    
+    public static Comprador iniciarSesion(Scanner sc){
+        Comprador comprador=null;
+        
+        System.out.println("INGRESE SU CORREO: ");
+        String correo=sc.nextLine();
+        System.out.println("INGRESE SU CLAVE");
+        String clave=sc.nextLine();
+        String pass=Utilitaria.calcularHash(clave);
+        
+        ArrayList<String> usuarios=new ArrayList<>();
+        try(Scanner sc2=new Scanner(new File("Compradores.txt"))){
+            while(sc2.hasNextLine())
+                usuarios.add(sc2.nextLine());
+            for(String usuario: usuarios){
+                String[] datos=usuario.split("\\|");
+                String correoUsuario=datos[3];
+                String claveUsuario=datos[5];
+                if(correoUsuario.equals(correo) && pass.equals(claveUsuario)){
+                    comprador=new Comprador(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
+                }
+            }
+        }
+        catch(Exception e){
+        }
+
+        return comprador;
+    }
+    
+    public ArrayList<Oferta> obtenerOfertas(){
+        ArrayList<String> ofertasPuestas=new ArrayList<>();
+        ArrayList<Oferta> ofertas=new ArrayList<>();
+        try(Scanner sc=new Scanner(new File("Ofertas.txt"))){
+            while(sc.hasNextLine())
+                ofertasPuestas.add(sc.nextLine());
+            for(String oferta: ofertasPuestas){
+                String[] datos=oferta.split("\\|");
+                int id_oferta=Integer.parseInt(datos[0]);
+                String placa_vehiculo=datos[1];
+                double precio_oferta=Double.parseDouble(datos[2]);
+                if(this.id==id_oferta){
+                    Vehiculo vehiculo=Utilitaria.obtenerPorPlaca(placa_vehiculo);
+                    ofertas.add(new Oferta(this.id,this,placa_vehiculo,vehiculo,precio_oferta));
+                }
+            }
+        }
+        catch(Exception e){}
+        return ofertas;
+    }
+    
+    public static void consultarOfertas(Scanner sc){
+        Comprador comprador=Comprador.iniciarSesion(sc);
+        if(comprador==null)
+            System.out.println("USUARIO NO EXISTE");
+        else{
+                ArrayList<Oferta> ofertas=comprador.obtenerOfertas();
+                System.out.println("SE HAN REALIZADO "+ofertas.size()+" OFERTAS.");
+                for(int i=0;i<ofertas.size();i++){
+                    System.out.println("OFERTA "+(i+1));
+                    System.out.println("Correo: "+ofertas.get(i).getComprador().getCorreo());
+                    System.out.println("Precio ofertado "+ofertas.get(i).getPrecioOferta());
+                    if(i==0){
+                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2)ACEPTAR OFERTA");
+                        int opcion=sc.nextInt();
+                        if(opcion>=1&&opcion<=2){
+                            if(opcion==2){
+                                //Utilitaria.enviarConGMail(ofertas.get(i).getComprador().getCorreo(),this.correo,"SU OFERTA HA SIDO ACEPTADA");
+                                Utilitaria.eliminarOferta(ofertas.get(i),"Ofertas.txt");
+                                break;
+                            }
+                        }else
+                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
+                    }else{
+                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3)ELIMINAR OFERTA");
+                        int opcion=sc.nextInt();
+                        if(opcion>=1&&opcion<=3){
+                            if(opcion==2)
+                                i-=2;
+                            else if(opcion==3){
+                                //Utilitaria.enviarConGMail(ofertas.get(i).comprador.getCorreo(),correo,"SU OFERTA HA SIDO ACEPTADA");
+                                Utilitaria.eliminarOferta(ofertas.get(i),"Ofertas.txt");
+                                break;
+                            }
+                        }else
+                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
+                    }
+                }
+            }
+        }
+    
     
     public static Comprador obtenerPorId(int id){
         ArrayList<String> compradores=new ArrayList<>();
@@ -66,7 +156,7 @@ public class Comprador extends Usuario{
             while(sc.hasNextLine())
                 compradores.add(sc.nextLine());
             for(String comprador: compradores){
-                String[] datos=comprador.split("|");
+                String[] datos=comprador.split("\\|");
                 int id_comprador=Integer.parseInt(datos[0]);
                 if(id==id_comprador){
                     retorno=new Comprador(id_comprador,datos[1],datos[2],datos[3],datos[4],datos[5]);

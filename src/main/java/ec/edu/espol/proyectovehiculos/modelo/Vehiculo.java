@@ -159,35 +159,6 @@ public class Vehiculo {
         }
     }
     
-    public static Vehiculo obtenerPorPlaca(String placa){
-        ArrayList<String> vehiculos=new ArrayList<>();
-        Vehiculo vehiculoRetorno=null;
-        try(Scanner sc=new Scanner(new File("Vehiculos.txt"))){
-            while(sc.hasNextLine())
-                vehiculos.add(sc.nextLine());
-            for(String vehiculo: vehiculos){
-                String[] datos=vehiculo.split("|");
-                String placaVehiculo=datos[2];
-                if(placaVehiculo.equals(placa)){
-                    TipoVehiculo tipo=TipoVehiculo.valueOf(datos[2]);
-                    switch(tipo){
-                    case MOTO:
-                        vehiculoRetorno= new Vehiculo(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11]));
-                        break;
-                    case CARRO:
-                        vehiculoRetorno= new Carro(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11]),Integer.parseInt(datos[12]),datos[13]);
-                        break;
-                    case CAMIONETA:
-                        vehiculoRetorno= new Camioneta(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11]),Integer.parseInt(datos[12]),datos[13],datos[14]);
-                        break;
-                    }
-                }
-            }
-        }
-        catch(Exception e){
-        }
-        return vehiculoRetorno; 
-    }
     
     public ArrayList<Oferta> obtenerOfertas(){
         ArrayList<String> ofertasPuestas=new ArrayList<>();
@@ -196,7 +167,7 @@ public class Vehiculo {
             while(sc.hasNextLine())
                 ofertasPuestas.add(sc.nextLine());
             for(String oferta: ofertasPuestas){
-                String[] datos=oferta.split("|");
+                String[] datos=oferta.split("\\|");
                 int id_comprador=Integer.parseInt(datos[0]);
                 String placa_vehiculo=datos[1];
                 double precio_oferta=Double.parseDouble(datos[2]);
