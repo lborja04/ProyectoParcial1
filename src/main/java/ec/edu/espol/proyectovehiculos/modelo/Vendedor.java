@@ -7,8 +7,6 @@ package ec.edu.espol.proyectovehiculos.modelo;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,23 +15,21 @@ import java.util.Scanner;
  * @author USER
  */
 public class Vendedor extends Usuario{
-    
-    private ArrayList<Vehiculo> vehiculosEnVenta;
 
+    
+    
     public Vendedor(int id,String nombres, String apellidos, String correo, String organizacion, String clave) {
         super(id,nombres, apellidos, correo, organizacion, clave);
-        this.vehiculosEnVenta = new ArrayList<>();
     }
     
-    public Vendedor(){}
     
-    public ArrayList<Vehiculo> getVehiculosEnVenta() {
-        return this.vehiculosEnVenta;
+    
+    @Override
+    public String toString(){
+        return id+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+clave+"|VENDEDOR";
     }
-
-    public void setVehiculosEnVenta(ArrayList<Vehiculo> vehiculosEnVenta) {
-        this.vehiculosEnVenta = vehiculosEnVenta;
-    }
+    
+    
     
     public static void registrarVendedor(Scanner sc){
         System.out.println("INGRESE LOS NOMBRES DEL VENDEDOR: ");
@@ -55,124 +51,104 @@ public class Vendedor extends Usuario{
         System.out.println("INGRESE LA CLAVE DEL VENDEDOR: ");
         String clave=sc.nextLine();
         
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File("Vendedores.txt"),true))){
-            pw.println(Utilitaria.generarID("Vendedores.txt")+"|"+nombres+"|"+apellidos+"|"+correo+"|"+organizacion+"|"+Utilitaria.calcularHash(clave)+"|VENDEDOR");
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
+        Vendedor vendedorNuevo=new Vendedor(Utilitaria.generarID("Vendedores.txt"),nombres,apellidos,correo,organizacion,Utilitaria.calcularHash(clave));
+        Utilitaria.guardarEnArchivo("Vendedores.txt",vendedorNuevo.toString());
     }
+    
+    
     
     public static void ingresarVehiculo(Scanner sc){
         Vendedor vendedor=iniciarSesion(sc);
         if(vendedor!=null){
-                System.out.println("BIENVENIDO/A, "+vendedor.nombres);
-                String tipo;
-                do{
-                    System.out.print("INGRESE EL TIPO DE VEHICULO: ");
-                    tipo = sc.nextLine().toUpperCase();
-                    if(!tipo.equals("MOTO") && !tipo.equals("CARRO") && !tipo.equals("CAMIONETA"))
-                        System.out.println("TIPO DE VEHICULO INVALIDO.");
-                }
-                while(!tipo.equals("MOTO") && !tipo.equals("CARRO") && !tipo.equals("CAMIONETA"));
+            System.out.println("BIENVENIDO/A, "+vendedor.nombres);
+            String tipo;
+            do{
+                System.out.print("INGRESE EL TIPO DE VEHICULO: ");
+                tipo = sc.nextLine().toUpperCase();
+                if(!tipo.equals("MOTO") && !tipo.equals("CARRO") && !tipo.equals("CAMIONETA"))
+                    System.out.println("TIPO DE VEHICULO INVALIDO.");
+            }
+            while(!tipo.equals("MOTO") && !tipo.equals("CARRO") && !tipo.equals("CAMIONETA"));
                 
-                String placa;
-                do{
-                    System.out.print("INGRESE LA PLACA DEL VEHICULO: ");
-                    placa=sc.nextLine();
-                    if(Utilitaria.validarCorreo(vendedor.correo,"Vendedores.txt"))
-                        System.out.println("PLACA YA REGISTRADA.");
-                }
-                while(Utilitaria.validarPlaca(placa));
+            String placa;
+            do{
+                System.out.print("INGRESE LA PLACA DEL VEHICULO: ");
+                placa=sc.nextLine();
+                if(Utilitaria.validarCorreo(vendedor.correo,"Vendedores.txt"))
+                    System.out.println("PLACA YA REGISTRADA.");
+            }
+            while(Utilitaria.validarPlaca(placa));
                 
-                String precioPuesto;
-                do{
-                    System.out.println("INGRESE EL PRECIO DEL VEHICULO: ");
-                    precioPuesto = sc.nextLine();
-                }
-                while(!Utilitaria.esNumeroPosi(precioPuesto));
-                double precio=Double.parseDouble(precioPuesto);
+            String precioPuesto;
+            do{
+                System.out.println("INGRESE EL PRECIO DEL VEHICULO: ");
+                precioPuesto = sc.nextLine();
+            }
+            while(!Utilitaria.esNumeroPosi(precioPuesto));
+            double precio=Double.parseDouble(precioPuesto);
                 
-                System.out.println("INGRESE LA MARCA DEL VEHICULO: ");
-                String marca = sc.nextLine();
-                System.out.println("INGRESE EL MODELO DEL VEHICULO: ");
-                String modelo = sc.nextLine();
-                System.out.println("INGRESE EL TIPO MOTOR DEL VEHICULO: ");
-                String tipomotor = sc.nextLine();
+            System.out.println("INGRESE LA MARCA DEL VEHICULO: ");
+            String marca = sc.nextLine();
+            System.out.println("INGRESE EL MODELO DEL VEHICULO: ");
+            String modelo = sc.nextLine();
+            System.out.println("INGRESE EL TIPO MOTOR DEL VEHICULO: ");
+            String tipomotor = sc.nextLine();
                 
-                String añoPuesto;
+            String añoPuesto;
+            do{
+                System.out.println("INGRESE EL AÑO DEL VEHICULO: ");
+                añoPuesto = sc.nextLine();
+            }
+            while(!Utilitaria.esNumeroPosi(añoPuesto));
+            int anio=Integer.parseInt(añoPuesto);
+
+            String recorridoPuesto;
+            do{
+                System.out.println("INGRESE EL RECORRIDO DEL VEHICULO: ");
+                recorridoPuesto = sc.nextLine();
+            }
+            while(!Utilitaria.esNumeroPosi(recorridoPuesto));
+            double recorrido=Double.parseDouble(recorridoPuesto);
+ 
+            System.out.println("INGRESE EL COLOR DEL VEHICULO: ");
+            String color = sc.nextLine();
+            System.out.println("INGRESE EL TIPO DE COMBUSTIBLE DEL VEHICULO: ");
+            String tipoComb = sc.nextLine();
+                
+            Vehiculo nuevoVehiculo=new Vehiculo();
+            if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.MOTO)
+                nuevoVehiculo=new Vehiculo(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio);
+                
+            else{
+                String numVidrios;
                 do{
-                    System.out.println("INGRESE EL AÑO DEL VEHICULO: ");
-                    añoPuesto = sc.nextLine();
+                System.out.println("INGRESE NUMERO DE VIDRIOS DEL VEHICULO: ");
+                numVidrios = sc.nextLine();
                 }
                 while(!Utilitaria.esNumeroPosi(añoPuesto));
-                int anio=Integer.parseInt(añoPuesto);
+                int vidrios=Integer.parseInt(numVidrios);
 
-                String recorridoPuesto;
-                do{
-                    System.out.println("INGRESE EL RECORRIDO DEL VEHICULO: ");
-                    recorridoPuesto = sc.nextLine();
-                }
-                while(!Utilitaria.esNumeroPosi(recorridoPuesto));
-                double recorrido=Double.parseDouble(recorridoPuesto);
- 
-                System.out.println("INGRESE EL COLOR DEL VEHICULO: ");
-                String color = sc.nextLine();
-                System.out.println("INGRESE EL TIPO DE COMBUSTIBLE DEL VEHICULO: ");
-                String tipoComb = sc.nextLine();
+                System.out.println("INGRESE TRANSMISION DEL VEHICULO: ");
+                String trasmi=sc.next();
                 
-                Vehiculo nuevoVehiculo=new Vehiculo();
-                if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.MOTO)
-                    nuevoVehiculo=new Vehiculo(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio);
-                
-                
-                else{
-                    String numVidrios;
-                    do{
-                    System.out.println("INGRESE NUMERO DE VIDRIOS DEL VEHICULO: ");
-                    numVidrios = sc.nextLine();
-                    }
-                    while(!Utilitaria.esNumeroPosi(añoPuesto));
-                    int vidrios=Integer.parseInt(numVidrios);
-                        
-                    System.out.println("INGRESE TRANSMISION DEL VEHICULO: ");
-                    String trasmi=sc.next();
-                    if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.CARRO)
-                        nuevoVehiculo= new Carro(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio,vidrios,trasmi);
+                if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.CARRO)
+                    nuevoVehiculo= new Carro(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio,vidrios,trasmi);
+
+                else if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.CAMIONETA){
+                    System.out.println("INGRESE TRACCION DEL VEHICULO: ");
+                    String traccion=sc.nextLine();
                     
-                    else if(TipoVehiculo.valueOf(tipo)==TipoVehiculo.CAMIONETA){
-                        System.out.println("INGRESE TRACCION DEL VEHICULO: ");
-                        String traccion=sc.nextLine();
-                        nuevoVehiculo=new Camioneta(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio,vidrios,trasmi,traccion);
-                    }
+                    nuevoVehiculo=new Camioneta(vendedor.id,placa,marca,modelo,tipomotor,anio,recorrido,color,tipoComb,precio,vidrios,trasmi,traccion);
                 }
-                vendedor.vehiculosEnVenta.add(nuevoVehiculo);
-                nuevoVehiculo.registrarVehiculo("Vehiculos.txt");
-        }
-    }
-    
-    public void cargarVehiculos(){
-        ArrayList<String> vehiculos=new ArrayList<>();
-        try(Scanner sc=new Scanner(new File("Vehiculos.txt"))){
-            while(sc.hasNextLine())
-                vehiculos.add(sc.nextLine());
-        }
-        catch(Exception e){}
-        for(String vehiculo: vehiculos){
-            String[] datos=vehiculo.split("\\|");
-            TipoVehiculo tipo=TipoVehiculo.valueOf(datos[2]);
-            switch(tipo){
-                case MOTO:
-                    this.vehiculosEnVenta.add(new Vehiculo(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11])));
-                    break;
-                case CARRO:
-                    this.vehiculosEnVenta.add(new Carro(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11]),Integer.parseInt(datos[12]),datos[13]));
-                    break;
-                case CAMIONETA:
-                    this.vehiculosEnVenta.add(new Camioneta(Integer.parseInt(datos[1]),datos[3],datos[4],datos[5],datos[6],Integer.parseInt(datos[7]),Double.parseDouble(datos[8]),datos[9],datos[10],Double.parseDouble(datos[11]),Integer.parseInt(datos[12]),datos[13],datos[14]));
-                    break;
             }
+            Utilitaria.guardarEnArchivo("Vehiculos.txt",nuevoVehiculo.toString());
+        }
+        else{
+            System.out.println("INICIO DE SESION SIN EXITO.");
         }
     }
+     
+    
     
     public static Vendedor iniciarSesion(Scanner sc){
         Vendedor vendedor=null;
@@ -193,7 +169,6 @@ public class Vendedor extends Usuario{
                 String claveUsuario=datos[5];
                 if(correoUsuario.equals(correo) && pass.equals(claveUsuario)){
                     vendedor=new Vendedor(Integer.parseInt(datos[0]),datos[1],datos[2],correoUsuario,datos[4],claveUsuario);
-                    vendedor.cargarVehiculos();
                 }
             }
         }
@@ -203,10 +178,12 @@ public class Vendedor extends Usuario{
         return vendedor;
     }
     
+    
+    
     public static void aceptarOferta(Scanner sc){
         Vendedor vendedor=Vendedor.iniciarSesion(sc);
         if(vendedor==null)
-            System.out.println("USUARIO NO EXISTE");
+            System.out.println("INICIO DE SESION SIN EXITO.");
         else{
             System.out.println("INGRESE LA PLACA DEL VEHÍCULO DEL CUAL QUIERE REVISAR SUS OFERTAS");
             String placa=sc.nextLine();
@@ -214,42 +191,91 @@ public class Vendedor extends Usuario{
                 System.out.println("PLACA NO EXISTE");
             else{
                 Vehiculo v1=Utilitaria.obtenerPorPlaca(placa);
-                System.out.println(v1.getMarca()+" "+v1.getModelo()+" "+v1.getPrecio());
-                ArrayList<Oferta> ofertas=v1.obtenerOfertas();
-                System.out.println("SE HAN REALIZADO "+ofertas.size()+" OFERTAS.");
-                for(int i=0;i<ofertas.size();i++){
-                    System.out.println("OFERTA "+(i+1));
-                    System.out.println("Correo: "+ofertas.get(i).getComprador().getCorreo());
-                    System.out.println("Precio ofertado "+ofertas.get(i).getPrecioOferta());
-                    if(i==0){
-                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2)ACEPTAR OFERTA");
-                        int opcion=sc.nextInt();
-                        sc.nextLine();
-                        if(opcion>=1&&opcion<=2){
-                            if(opcion==2){
-                                //Utilitaria.enviarConGMail(ofertas.get(i).getComprador().getCorreo(),this.correo,"SU OFERTA HA SIDO ACEPTADA");
-                                Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo(),"Vehiculos.txt");
-                                break;
+                if(v1.getId_vendedor()==vendedor.id){
+                    System.out.println(v1.getMarca()+" "+v1.getModelo()+" "+v1.getPrecio());
+                    ArrayList<Oferta> ofertas=v1.obtenerOfertas();
+                    System.out.println("SE HAN REALIZADO "+ofertas.size()+" OFERTAS.");
+                    int i=0;
+                    boolean condicionWhile=true;
+                    while (i<ofertas.size() && condicionWhile) {
+                        System.out.println("OFERTA "+(i+1));
+                        System.out.println("CORREO: "+ofertas.get(i).getComprador().getCorreo());
+                        System.out.println("PRECIO OFERTADO: "+ofertas.get(i).getPrecioOferta());
+                        if(i==0){
+                            System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2)ACEPTAR OFERTA");
+                            String opcionPuesta;
+                            do{
+                                System.out.print("INGRESE OPCION: ");
+                                opcionPuesta=sc.nextLine();
                             }
-                        }else
-                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
-                    }else{
-                        System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3)ACEPTAR OFERTA");
-                        int opcion=sc.nextInt();
-                        sc.nextLine();
-                        if(opcion>=1&&opcion<=3){
-                            if(opcion==2)
-                                i-=2;
-                            else if(opcion==3){
-                                //Utilitaria.enviarConGMail(ofertas.get(i).comprador.getCorreo(),correo,"SU OFERTA HA SIDO ACEPTADA");
-                                Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo(),"Vehiculos.txt");
-                                break;
+                            while(!opcionPuesta.equals("1") && !opcionPuesta.equals("2"));
+                            int opcion=Integer.parseInt(opcionPuesta);
+                            switch (opcion) {
+                                case 1:
+                                    i++;
+                                    break;
+                                case 2:
+                                    System.out.println("SE LE HA NOTIFICADO AL COMPRADOR");
+                                    String destinatario=ofertas.get(i).getComprador().correo;
+                                    String asunto="OFERTA ACEPTADA";
+                                    String cuerpo="SU OFERTA POR "+ofertas.get(i).getVehiculo()+" HA SIDO ACEPTADA, EL VENDEDOR PRONTO SE PONDRA EN CONTACTO.";
+                                    Utilitaria.enviarConGMail(destinatario,asunto,cuerpo);
+                                    Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo());
+                                    condicionWhile=false;
+                                    break;
                             }
-                        }else
-                            System.out.println("HA INGRESADO UNA OPCION NO VALIDA");
+                        }else{
+                            System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3)ACEPTAR OFERTA");
+                            String opcionPuesta;
+                            do{
+                                System.out.print("INGRESE OPCION: ");
+                                opcionPuesta=sc.nextLine();
+                            }
+                            while(!opcionPuesta.equals("1") && !opcionPuesta.equals("2") && !opcionPuesta.equals("3"));
+                            int opcion=Integer.parseInt(opcionPuesta);
+                            switch (opcion) {
+                                case 1:
+                                    i++;
+                                    break;
+                                case 2:
+                                    i--;
+                                    break;
+                                case 3:
+                                    System.out.println("SE LE HA NOTIFICADO AL COMPRADOR");
+                                    String destinatario=ofertas.get(i).getComprador().correo;
+                                    String asunto="OFERTA ACEPTADA";
+                                    String cuerpo="SU OFERTA POR "+ofertas.get(i).getVehiculo()+" HA SIDO ACEPTADA, EL VENDEDOR PRONTO SE PONDRA EN CONTACTO.";
+                                    Utilitaria.enviarConGMail(destinatario,asunto,cuerpo);
+                                    Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo());
+                                    condicionWhile=false;
+                                    break;
+                            }
+                        }
                     }
+                }
+                else
+                    System.out.println("PLACA NO REGISTRADA A SU NOMBRE.");
+            }
+        }
+    }
+    
+    
+    
+    public static Vendedor obtenerPorId(int id){
+        ArrayList<String> vendedores=new ArrayList<>();
+        Vendedor retorno=null;
+        try(Scanner sc=new Scanner(new File("Vendedores.txt"))){
+            while(sc.hasNextLine())
+                vendedores.add(sc.nextLine());
+            for(String vendedor: vendedores){
+                String[] datos=vendedor.split("\\|");
+                int id_vendedor=Integer.parseInt(datos[0]);
+                if(id==id_vendedor){
+                    retorno=new Vendedor(id_vendedor,datos[1],datos[2],datos[3],datos[4],datos[5]);
                 }
             }
         }
+        catch(Exception e){}
+        return retorno;
     }
 }

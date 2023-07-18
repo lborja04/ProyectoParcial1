@@ -4,25 +4,27 @@
  */
 package ec.edu.espol.proyectovehiculos.modelo;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /**
  *
  * @author luisa
  */
 public class Oferta {
+    
+    
+    
     private int id_comprador;
     private Comprador comprador;
     private String placa_vehiculo;
     private Vehiculo vehiculo;
     private double precioOferta;
     
-    public Oferta(int id_comprador, Comprador comprador, String id_vehiculo, Vehiculo vehiculo,double precioOferta){
+    
+    
+    public Oferta(int id_comprador, String id_vehiculo, double precioOferta){
         this.id_comprador=id_comprador;
-        this.comprador=comprador;
+        this.comprador=Comprador.obtenerPorId(id_comprador);
         this.placa_vehiculo=id_vehiculo;
-        this.vehiculo=vehiculo;
+        this.vehiculo=Utilitaria.obtenerPorPlaca(placa_vehiculo);
         this.precioOferta=precioOferta;
     }
 
@@ -45,8 +47,6 @@ public class Oferta {
     public double getPrecioOferta() {
         return precioOferta;
     }
-    
-    
     
 }
 

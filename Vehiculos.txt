@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-2|gtl-2003|9450.6
-=======
-1|CARRO|gsl-2004|nissan|tiida|toyota|2004|2004.0|gris|diesel|30000.0|4|automatica
->>>>>>> e7a446903013bf00a3a84a05871ff367eb2f499d
+1|CARRO|gsl-2008|nissan|tiida|toyota|2004|2465.0|gris|diesel|30000.0|4|automatica
+1|CARRO|gsl-2006|nissan|tiida|toyota|2004|2461.0|gris|diesel|10000.0|4|automatica
+1|CARRO|gsl-2005|nissan|tiida|toyota|2004|7654.0|gris|diesel|30000.0|4|automatica
+1|MOTO|gtl-2010|aveo|grande|fuerte|1980|1023.5|rojo|eco|8000.0

@@ -5,8 +5,6 @@
 package ec.edu.espol.proyectovehiculos.modelo;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,6 +13,9 @@ import java.util.Scanner;
  * @author luisa
  */
 public class Vehiculo {
+    
+    
+    
     protected int id_vendedor;
     protected Vendedor vendedor;
     protected TipoVehiculo tipo;
@@ -29,8 +30,11 @@ public class Vehiculo {
     protected double precio;
     protected ArrayList<Oferta> ofertas;
     
+    
+    
     public Vehiculo(int id_vendedor, String placa, String marca, String modelo, String tipoMotor,int anio, double reco, String color, String tipoComb,double precio){
         this.id_vendedor=id_vendedor;
+        this.vendedor=Vendedor.obtenerPorId(id_vendedor);
         this.tipo=TipoVehiculo.MOTO;
         this.placa=placa;
         this.marca=marca;
@@ -151,13 +155,6 @@ public class Vehiculo {
         return id_vendedor+"|"+tipo+"|"+placa+"|"+marca+"|"+modelo+"|"+tipoMotor+"|"+anio+"|"+recorrido+"|"+color+"|"+tipoCombustible+"|"+precio;
     }
     
-    public void registrarVehiculo(String nomfile){
-        try(PrintWriter pw=new PrintWriter(new FileOutputStream(new File(nomfile),true))){
-            pw.println(this.toString());
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
     
     
     public ArrayList<Oferta> obtenerOfertas(){
@@ -172,8 +169,7 @@ public class Vehiculo {
                 String placa_vehiculo=datos[1];
                 double precio_oferta=Double.parseDouble(datos[2]);
                 if(this.placa.equals(placa_vehiculo)){
-                    Comprador comprador=Comprador.obtenerPorId(id_comprador);
-                    ofertas.add(new Oferta(id_comprador,comprador,placa_vehiculo,this,precio_oferta));
+                    ofertas.add(new Oferta(id_comprador,placa_vehiculo,precio_oferta));
                 }
             }
         }

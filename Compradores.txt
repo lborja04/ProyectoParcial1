@@ -1,2 +1,1 @@
-1|luis|borja zevallos|laborja@espol.edu.ec|espol|5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5|COMPRADOR
-2|luis|zevallos|laborja@fiec.espol.edu.ec|fiec|03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4|COMPRADOR
+2|luis|zevallos|lborjaze@fiec.espol.edu.ec|fiec|03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4|COMPRADOR

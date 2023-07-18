@@ -5,9 +5,8 @@
 
 package ec.edu.espol.proyectovehiculos;
 
-import ec.edu.espol.proyectovehiculos.modelo.Comprador;
-import ec.edu.espol.proyectovehiculos.modelo.Utilitaria;
-import ec.edu.espol.proyectovehiculos.modelo.Vendedor;
+import ec.edu.espol.proyectovehiculos.modelo.*;
+
 import java.util.Scanner;
 
 /**
@@ -15,12 +14,17 @@ import java.util.Scanner;
  * @author luisa
  */
 public class ProyectoVehiculos {
+    
+    
+    
     public static void main(String[] args){
 
         ejecutarInterfaz();
         
     }
 
+    
+    
     public static void ejecutarInterfaz(){
         String opcion1;
         
@@ -91,14 +95,14 @@ public class ProyectoVehiculos {
                                 Comprador.registrarComprador(sc);
                                 break;
                             case "2":
-                                //Comprador.ofertarVehiculo();
+                                Comprador.ofertarVehiculo();
                                 break;
                         }
                         
                     }
                     
                 }
-                while(!opcion2.equals("4") && !opcion3.equals("3"));
+                while(!opcion2.equals("4") || !opcion3.equals("3"));
        
             }
             while(!opcion1.equals("3"));
