@@ -46,7 +46,7 @@ public class Utilitaria {
         //La dirección de correo de envío
         String remitente = "ventavehiculosespol@gmail.com";
         //La clave de aplicación obtenida según se explica en este artículo:
-        String claveemail = "xbsgrlrbjvderbca";
+        String claveemail = "yzhvrpcjypmsxxqw";
 
         Properties props = System.getProperties();
         props.put("mail.smtp.host", "smtp.gmail.com");  //El servidor SMTP de Google
@@ -57,6 +57,7 @@ public class Utilitaria {
 
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");  //Confía en todos los certificados 
 
+        props.put("mail.debug", "true");
         Session session = Session.getDefaultInstance(props);
 
         MimeMessage message = new MimeMessage(session);

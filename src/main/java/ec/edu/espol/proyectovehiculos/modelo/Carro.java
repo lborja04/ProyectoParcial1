@@ -24,4 +24,9 @@ public class Carro extends Vehiculo{
     public String toString(){
         return super.toString()+"|"+vidrios+"|"+transmision;
     }
+    
+    @Override
+    public String visualizar(){
+        return ("CARRO, MARCA: "+marca+", MODELO: "+modelo+", MOTOR: "+tipoMotor+", AÑO: "+anio+", RECORRIDO: "+recorrido+", COLOR: "+color+", COMBUSTIBLE: "+tipoCombustible+", VIDRIOS: "+vidrios+", TRANSMISION: "+transmision+", PRECIO DE VENTA: "+precio);
+    }
 }

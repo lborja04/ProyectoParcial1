@@ -102,7 +102,7 @@ public class Comprador extends Usuario{
         Scanner sc=new Scanner(System.in);
         String tipo;
         do{
-            System.out.print("INGRESE TIPO DE VEHICULO DESEADO: ");
+            System.out.println("INGRESE TIPO DE VEHICULO DESEADO (PRESIONE ENTER SI DESEA SALTAR ESTE PARAMETRO): ");
             tipo = sc.nextLine().toUpperCase();
             if(!tipo.isEmpty()){
                 if(!tipo.equals("MOTO") && !tipo.equals("CARRO") && !tipo.equals("CAMIONETA"))
@@ -111,7 +111,7 @@ public class Comprador extends Usuario{
         }
         while(!tipo.equals("MOTO") && !tipo.equals("CARRO") && !tipo.equals("CAMIONETA") && !tipo.isEmpty());
 
-        System.out.println("INGRESE RANGO DE RECORRIDO DESEADO");
+        System.out.println("INGRESE RANGO DE RECORRIDO DESEADO (PRESIONE ENTER SI DESEA SALTAR ESTE PARAMETRO)");
         String recorridoInicioPuesto;
         String recorridoFinPuesto="";
         boolean condicionRecorrido=false;
@@ -129,7 +129,7 @@ public class Comprador extends Usuario{
         }
         while(!condicionRecorrido && !recorridoFinPuesto.isEmpty());
      
-        System.out.println("INGRESE RANGO DE AÑO DESEADO");
+        System.out.println("INGRESE RANGO DE AÑO DESEADO (PRESIONE ENTER SI DESEA SALTAR ESTE PARAMETRO)");
         String anioInicioPuesto;
         String anioFinPuesto="";
         boolean condicionAnio=false;
@@ -147,7 +147,7 @@ public class Comprador extends Usuario{
         }
         while(!condicionAnio && !anioFinPuesto.isEmpty());
         
-        System.out.println("INGRESE RANGO DE PRECIO DESEADO");
+        System.out.println("INGRESE RANGO DE PRECIO DESEADO (PRESIONE ENTER SI DESEA SALTAR ESTE PARAMETRO)");
         String precioInicioPuesto;
         String precioFinPuesto="";
         boolean condicionPrecio=false;
@@ -217,7 +217,7 @@ public class Comprador extends Usuario{
         boolean condicionWhile=true;
         while (i<vehiculosDisponibles.size() && condicionWhile) {
             System.out.println("VEHICULO "+(i+1));
-            System.out.println(vehiculosDisponibles.get(i).toString().substring(2));
+            System.out.println(vehiculosDisponibles.get(i).visualizar());
             if (i==0) {
                 System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE VEHICULO: \n2)OFERTAR POR VEHICULO");
                 String opcionPuesta;

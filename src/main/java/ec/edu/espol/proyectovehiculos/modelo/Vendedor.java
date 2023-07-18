@@ -39,7 +39,7 @@ public class Vendedor extends Usuario{
         
         String correo;
         do{
-            System.out.print("INGRESE EL CORREO DEL VENDEDOR: ");
+            System.out.println("INGRESE EL CORREO DEL VENDEDOR: ");
             correo=sc.nextLine();
             if(Utilitaria.validarCorreo("Vendedores.txt",correo))
                 System.out.println("CORREO YA EN USO.");
@@ -63,7 +63,7 @@ public class Vendedor extends Usuario{
             System.out.println("BIENVENIDO/A, "+vendedor.nombres);
             String tipo;
             do{
-                System.out.print("INGRESE EL TIPO DE VEHICULO: ");
+                System.out.println("INGRESE EL TIPO DE VEHICULO: ");
                 tipo = sc.nextLine().toUpperCase();
                 if(!tipo.equals("MOTO") && !tipo.equals("CARRO") && !tipo.equals("CAMIONETA"))
                     System.out.println("TIPO DE VEHICULO INVALIDO.");
@@ -72,7 +72,7 @@ public class Vendedor extends Usuario{
                 
             String placa;
             do{
-                System.out.print("INGRESE LA PLACA DEL VEHICULO: ");
+                System.out.println("INGRESE LA PLACA DEL VEHICULO: ");
                 placa=sc.nextLine();
                 if(Utilitaria.validarCorreo(vendedor.correo,"Vendedores.txt"))
                     System.out.println("PLACA YA REGISTRADA.");
@@ -192,7 +192,7 @@ public class Vendedor extends Usuario{
             else{
                 Vehiculo v1=Utilitaria.obtenerPorPlaca(placa);
                 if(v1.getId_vendedor()==vendedor.id){
-                    System.out.println(v1.getMarca()+" "+v1.getModelo()+" "+v1.getPrecio());
+                    System.out.println("Vehiculo "+v1.getMarca()+", modelo "+v1.getModelo()+", precio de venta: $"+v1.getPrecio());
                     ArrayList<Oferta> ofertas=v1.obtenerOfertas();
                     System.out.println("SE HAN REALIZADO "+ofertas.size()+" OFERTAS.");
                     int i=0;
@@ -202,7 +202,7 @@ public class Vendedor extends Usuario{
                         System.out.println("CORREO: "+ofertas.get(i).getComprador().getCorreo());
                         System.out.println("PRECIO OFERTADO: "+ofertas.get(i).getPrecioOferta());
                         if(i==0){
-                            System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2)ACEPTAR OFERTA");
+                            System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA: \n2) ACEPTAR OFERTA");
                             String opcionPuesta;
                             do{
                                 System.out.print("INGRESE OPCION: ");
@@ -215,17 +215,17 @@ public class Vendedor extends Usuario{
                                     i++;
                                     break;
                                 case 2:
-                                    System.out.println("SE LE HA NOTIFICADO AL COMPRADOR");
+                                    System.out.println("NOTIFICANDOLE AL COMPRADOR...");
                                     String destinatario=ofertas.get(i).getComprador().correo;
                                     String asunto="OFERTA ACEPTADA";
-                                    String cuerpo="SU OFERTA POR "+ofertas.get(i).getVehiculo()+" HA SIDO ACEPTADA, EL VENDEDOR PRONTO SE PONDRA EN CONTACTO.";
+                                    String cuerpo="SU OFERTA POR "+ofertas.get(i).getVehiculo().visualizar()+" HA SIDO ACEPTADA, EL VENDEDOR PRONTO SE PONDRA EN CONTACTO.";
                                     Utilitaria.enviarConGMail(destinatario,asunto,cuerpo);
                                     Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo());
                                     condicionWhile=false;
                                     break;
                             }
                         }else{
-                            System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3)ACEPTAR OFERTA");
+                            System.out.println("SELECCIONE UNA OPCION: \n1) SIGUIENTE OFERTA \n2) ANTERIOR OFERTA\n3) ACEPTAR OFERTA");
                             String opcionPuesta;
                             do{
                                 System.out.print("INGRESE OPCION: ");
@@ -241,10 +241,10 @@ public class Vendedor extends Usuario{
                                     i--;
                                     break;
                                 case 3:
-                                    System.out.println("SE LE HA NOTIFICADO AL COMPRADOR");
+                                    System.out.println("NOTIFICANDOLE AL COMPRADOR...");
                                     String destinatario=ofertas.get(i).getComprador().correo;
                                     String asunto="OFERTA ACEPTADA";
-                                    String cuerpo="SU OFERTA POR "+ofertas.get(i).getVehiculo()+" HA SIDO ACEPTADA, EL VENDEDOR PRONTO SE PONDRA EN CONTACTO.";
+                                    String cuerpo="SU OFERTA POR "+ofertas.get(i).getVehiculo().visualizar()+" HA SIDO ACEPTADA, EL VENDEDOR PRONTO SE PONDRA EN CONTACTO.";
                                     Utilitaria.enviarConGMail(destinatario,asunto,cuerpo);
                                     Utilitaria.eliminarVehiculo(ofertas.get(i).getVehiculo());
                                     condicionWhile=false;

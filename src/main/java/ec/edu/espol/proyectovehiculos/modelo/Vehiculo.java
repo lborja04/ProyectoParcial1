@@ -155,6 +155,9 @@ public class Vehiculo {
         return id_vendedor+"|"+tipo+"|"+placa+"|"+marca+"|"+modelo+"|"+tipoMotor+"|"+anio+"|"+recorrido+"|"+color+"|"+tipoCombustible+"|"+precio;
     }
     
+    public String visualizar(){
+        return ("MOTO, MARCA: "+marca+", MODELO: "+modelo+", MOTOR: "+tipoMotor+", AÑO: "+anio+", RECORRIDO: "+recorrido+", COLOR: "+color+", COMBUSTIBLE: "+tipoCombustible+", PRECIO DE VENTA: "+precio);
+    }
     
     
     public ArrayList<Oferta> obtenerOfertas(){

@@ -21,4 +21,9 @@ public class Camioneta extends Carro{
     public String toString(){
         return super.toString()+"|"+traccion;
     }
+    
+    @Override
+    public String visualizar(){
+        return ("CAMIONETA, MARCA: "+marca+", MODELO: "+modelo+", MOTOR: "+tipoMotor+", AÑO: "+anio+", RECORRIDO: "+recorrido+", COLOR: "+color+", COMBUSTIBLE: "+tipoCombustible+", VIDRIOS: "+vidrios+", TRANSMISION: "+transmision+", TRACCION: "+traccion+", PRECIO DE VENTA: "+precio);
+    }
 }
